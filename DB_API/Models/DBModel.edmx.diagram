@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="449211b955614efd9ecd45904d77269f" Name="Diagram1">
+        <EntityTypeShape EntityType="DBModel.Coffee" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.Credit" Width="1.5" PointX="7.5" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.Customer" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.Order" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.Promotion" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="DBModel.FK_Order_Coffee" ManuallyRouted="false" />
+        <AssociationConnector Association="DBModel.FK_Order_Customers" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DBModel.CustomerPoint" Width="1.5" PointX="5.125" PointY="0.625" />
+        <AssociationConnector Association="DBModel.FK_Credit_Credit" />
+        <AssociationConnector Association="DBModel.FK_CustomerPoints_Customers" />
+        <AssociationConnector Association="DBModel.FK_CustomerPoints_Promotion" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/alertify.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/alertify.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/themes/default.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/themes/bootstrap.min.css" />
+
+<h3>CheckOut</h3>
+@if (ViewBag.Message1 != null)
+{
+    <script>
+
+$(document).ready(function(){
+    debugger;
+    alertify.success('@ViewBag.Message1');
+
+});
+
+    </script>
+
+}
+@if (ViewBag.Message2 != null)
+{
+    <script>
+
+$(document).ready(function(){
+    debugger;
+    alertify.error('@ViewBag.Message2');
+
+});
+
+    </script>
+
+}
+<table>
+    <tr>
+        <th>Total Amount To Pay</th>
+    </tr>
+    <tr>
+        <td>
+            @ViewBag.total
+        </td>
+    </tr>
+</table>
+@using (Html.BeginForm())
+{
+    <input type="submit" value="Send Invoice to email" />
+
+}

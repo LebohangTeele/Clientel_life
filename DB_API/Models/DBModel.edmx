@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Coffee">
+          <Key>
+            <PropertyRef Name="CofID" />
+          </Key>
+          <Property Name="CofID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CofName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CofDiscription" Type="nvarchar" MaxLength="500" />
+          <Property Name="Price" Type="money" />
+          <Property Name="ImageURL" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Credit">
+          <Key>
+            <PropertyRef Name="CreID" />
+          </Key>
+          <Property Name="CreID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProPointsID" Type="int" />
+          <Property Name="Credit" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CustomerPoints">
+          <Key>
+            <PropertyRef Name="ProPointsID" />
+          </Key>
+          <Property Name="ProPointsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProID" Type="int" />
+          <Property Name="Points" Type="int" />
+          <Property Name="RedeemedDate" Type="date" />
+          <Property Name="OrderNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="CusID" Type="int" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CusID" />
+          </Key>
+          <Property Name="CusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CusName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CusSurname" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CusID" Type="int" />
+          <Property Name="CofID" Type="int" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Orderdate" Type="date" />
+          <Property Name="Totalprice" Type="money" />
+          <Property Name="OrderNumber" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Promotion">
+          <Key>
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="ProID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prodiscription" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProStartDate" Type="date" />
+          <Property Name="ProEndDate" Type="date" />
+          <Property Name="Points" Type="int" />
+          <Property Name="PointValue" Type="int" />
+        </EntityType>
+        <Association Name="FK_Credit_Credit">
+          <End Role="CustomerPoints" Type="Self.CustomerPoints" Multiplicity="0..1" />
+          <End Role="Credit" Type="Self.Credit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerPoints">
+              <PropertyRef Name="ProPointsID" />
+            </Principal>
+            <Dependent Role="Credit">
+              <PropertyRef Name="ProPointsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerPoints_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="CustomerPoints" Type="Self.CustomerPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CusID" />
+            </Principal>
+            <Dependent Role="CustomerPoints">
+              <PropertyRef Name="CusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerPoints_Promotion">
+          <End Role="Promotion" Type="Self.Promotion" Multiplicity="0..1" />
+          <End Role="CustomerPoints" Type="Self.CustomerPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promotion">
+              <PropertyRef Name="ProID" />
+            </Principal>
+            <Dependent Role="CustomerPoints">
+              <PropertyRef Name="ProID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Coffee">
+          <End Role="Coffee" Type="Self.Coffee" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Coffee">
+              <PropertyRef Name="CofID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CofID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CusID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBModelStoreContainer">
+          <EntitySet Name="Coffee" EntityType="Self.Coffee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Credit" EntityType="Self.Credit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerPoints" EntityType="Self.CustomerPoints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Promotion" EntityType="Self.Promotion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Credit_Credit" Association="Self.FK_Credit_Credit">
+            <End Role="CustomerPoints" EntitySet="CustomerPoints" />
+            <End Role="Credit" EntitySet="Credit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerPoints_Customers" Association="Self.FK_CustomerPoints_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="CustomerPoints" EntitySet="CustomerPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerPoints_Promotion" Association="Self.FK_CustomerPoints_Promotion">
+            <End Role="Promotion" EntitySet="Promotion" />
+            <End Role="CustomerPoints" EntitySet="CustomerPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Coffee" Association="Self.FK_Order_Coffee">
+            <End Role="Coffee" EntitySet="Coffee" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Customers" Association="Self.FK_Order_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Coffee">
+          <Key>
+            <PropertyRef Name="CofID" />
+          </Key>
+          <Property Name="CofID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CofName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CofDiscription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Coffee" FromRole="Coffee" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Credit">
+          <Key>
+            <PropertyRef Name="CreID" />
+          </Key>
+          <Property Name="CreID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProPointsID" Type="Int32" />
+          <Property Name="Credit1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CustomerPoint" Relationship="DBModel.FK_Credit_Credit" FromRole="Credit" ToRole="CustomerPoint" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CusID" />
+          </Key>
+          <Property Name="CusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CusName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CusSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Customers" FromRole="Customers" ToRole="Order" />
+          <NavigationProperty Name="CustomerPoints" Relationship="DBModel.FK_CustomerPoints_Customers" FromRole="Customer" ToRole="CustomerPoint" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CusID" Type="Int32" />
+          <Property Name="CofID" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="Coffee" Relationship="Self.FK_Order_Coffee" FromRole="Order" ToRole="Coffee" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Order_Customers" FromRole="Order" ToRole="Customers" />
+          <Property Name="Orderdate" Type="DateTime" Precision="0" />
+          <Property Name="Totalprice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Promotion">
+          <Key>
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="ProID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prodiscription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProStartDate" Type="DateTime" Precision="0" />
+          <Property Name="ProEndDate" Type="DateTime" Precision="0" />
+          <Property Name="Points" Type="Int32" />
+          <Property Name="PointValue" Type="Int32" />
+          <NavigationProperty Name="CustomerPoints" Relationship="DBModel.FK_CustomerPoints_Promotion" FromRole="Promotion" ToRole="CustomerPoint" />
+        </EntityType>
+        <Association Name="FK_Order_Coffee">
+          <End Role="Coffee" Type="Self.Coffee" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Coffee">
+              <PropertyRef Name="CofID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CofID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Customers">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CusID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Coffees" EntityType="Self.Coffee" />
+          <EntitySet Name="Credits" EntityType="Self.Credit" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Promotions" EntityType="Self.Promotion" />
+          <AssociationSet Name="FK_Order_Coffee" Association="Self.FK_Order_Coffee">
+            <End Role="Coffee" EntitySet="Coffees" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Customers" Association="Self.FK_Order_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <EntitySet Name="CustomerPoints" EntityType="DBModel.CustomerPoint" />
+          <AssociationSet Name="FK_Credit_Credit" Association="DBModel.FK_Credit_Credit">
+            <End Role="CustomerPoint" EntitySet="CustomerPoints" />
+            <End Role="Credit" EntitySet="Credits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerPoints_Customers" Association="DBModel.FK_CustomerPoints_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerPoint" EntitySet="CustomerPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerPoints_Promotion" Association="DBModel.FK_CustomerPoints_Promotion">
+            <End Role="Promotion" EntitySet="Promotions" />
+            <End Role="CustomerPoint" EntitySet="CustomerPoints" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CustomerPoint">
+          <Key>
+            <PropertyRef Name="ProPointsID" />
+          </Key>
+          <Property Name="ProPointsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProID" Type="Int32" />
+          <Property Name="Points" Type="Int32" />
+          <Property Name="RedeemedDate" Type="DateTime" Precision="0" />
+          <Property Name="OrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CusID" Type="Int32" />
+          <NavigationProperty Name="Credits" Relationship="DBModel.FK_Credit_Credit" FromRole="CustomerPoint" ToRole="Credit" />
+          <NavigationProperty Name="Customer" Relationship="DBModel.FK_CustomerPoints_Customers" FromRole="CustomerPoint" ToRole="Customer" />
+          <NavigationProperty Name="Promotion" Relationship="DBModel.FK_CustomerPoints_Promotion" FromRole="CustomerPoint" ToRole="Promotion" />
+        </EntityType>
+        <Association Name="FK_Credit_Credit">
+          <End Type="DBModel.CustomerPoint" Role="CustomerPoint" Multiplicity="0..1" />
+          <End Type="DBModel.Credit" Role="Credit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerPoint">
+              <PropertyRef Name="ProPointsID" />
+            </Principal>
+            <Dependent Role="Credit">
+              <PropertyRef Name="ProPointsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerPoints_Customers">
+          <End Type="DBModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="DBModel.CustomerPoint" Role="CustomerPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CusID" />
+            </Principal>
+            <Dependent Role="CustomerPoint">
+              <PropertyRef Name="CusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerPoints_Promotion">
+          <End Type="DBModel.Promotion" Role="Promotion" Multiplicity="0..1" />
+          <End Type="DBModel.CustomerPoint" Role="CustomerPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promotion">
+              <PropertyRef Name="ProID" />
+            </Principal>
+            <Dependent Role="CustomerPoint">
+              <PropertyRef Name="ProID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBModelStoreContainer" CdmEntityContainer="DBEntities">
+          <EntitySetMapping Name="Coffees">
+            <EntityTypeMapping TypeName="DBModel.Coffee">
+              <MappingFragment StoreEntitySet="Coffee">
+                <ScalarProperty Name="CofID" ColumnName="CofID" />
+                <ScalarProperty Name="CofName" ColumnName="CofName" />
+                <ScalarProperty Name="CofDiscription" ColumnName="CofDiscription" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ImageURL" ColumnName="ImageURL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Credits">
+            <EntityTypeMapping TypeName="DBModel.Credit">
+              <MappingFragment StoreEntitySet="Credit">
+                <ScalarProperty Name="CreID" ColumnName="CreID" />
+                <ScalarProperty Name="ProPointsID" ColumnName="ProPointsID" />
+                <ScalarProperty Name="Credit1" ColumnName="Credit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="DBModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="CusID" ColumnName="CusID" />
+                <ScalarProperty Name="CusName" ColumnName="CusName" />
+                <ScalarProperty Name="CusSurname" ColumnName="CusSurname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="DBModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="Totalprice" ColumnName="Totalprice" />
+                <ScalarProperty Name="Orderdate" ColumnName="Orderdate" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="CusID" ColumnName="CusID" />
+                <ScalarProperty Name="CofID" ColumnName="CofID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Promotions">
+            <EntityTypeMapping TypeName="DBModel.Promotion">
+              <MappingFragment StoreEntitySet="Promotion">
+                <ScalarProperty Name="ProID" ColumnName="ProID" />
+                <ScalarProperty Name="ProName" ColumnName="ProName" />
+                <ScalarProperty Name="Prodiscription" ColumnName="Prodiscription" />
+                <ScalarProperty Name="ProStartDate" ColumnName="ProStartDate" />
+                <ScalarProperty Name="ProEndDate" ColumnName="ProEndDate" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="PointValue" ColumnName="PointValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerPoints">
+            <EntityTypeMapping TypeName="DBModel.CustomerPoint">
+              <MappingFragment StoreEntitySet="CustomerPoints">
+                <ScalarProperty Name="CusID" ColumnName="CusID" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="RedeemedDate" ColumnName="RedeemedDate" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="ProID" ColumnName="ProID" />
+                <ScalarProperty Name="ProPointsID" ColumnName="ProPointsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
